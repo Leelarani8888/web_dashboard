@@ -1,0 +1,542 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+
+<head>
+	<title>Health Information</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+	<script src="https://cdn.jsdelivr.net/momentjs/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+	<!-- <style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style> -->
+</head>
+
+<body style="
+  background-image: linear-gradient(to right, #662D8C  , #ED1E79);
+;
+">
+	<div style="display: flex; justify-content: space-between;">
+		<h3 style="color: white; margin-left: 20px ; font-size: 45px;" > Welcome <%= user %> !!</h3>
+		<a style="margin-right: 20px;margin-top: 15px;color: red;background-color: white; padding: 5px; border-radius: 10px; width: 80px;text-align: center;height: 30px;font-size: 17px;"
+			href="/logout" >Logout</a> 
+			</div>
+
+
+	<div class=" row" style="margin-top: 50px;">
+
+
+	</div>
+	</div>
+
+	<div class="col-sm-3" >
+		<div class="well" style="border-radius: 15px;">
+			<h3><span class="fa fa-user"></span> Heart Rate</h3>
+			<br>
+			<div style="display: flex;justify-content: space-between;">
+			<output id="heart_rate_value1"style="font-size: 20px;font-weight: bold;color: black;">Getting Heart Rate value</output>
+				<!-- <h4>Status <output id="heart_rate_status1">Getting Heart Rate Status</output></h4> -->
+			</div>	
+		</div>
+	</div>
+
+
+	<div class="col-sm-3">
+		<div class="well" style="border-radius: 15px;">
+			<h3><span class="fa fa-user"></span> Temperature</h3>
+			<br>
+			<div style="display: flex;justify-content: space-between;">
+			<output id="temperature_rate_value1"style="font-size: 20px;font-weight: bold;color: black;">Getting Temperature value</output>
+				<!-- <h4>Status <output id="temperature_rate_status1">Getting Temperature Status</output></h4> -->
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col-sm-3">
+		<div class="well" style="border-radius: 15px;">
+			<h3><span class="fa fa-user"></span> Oxidation</h3>
+			<br>
+			<div style="display: flex;justify-content: space-between;">
+				<output id="oxidation_rate_value1"style="font-size: 20px;font-weight: bold;color: black;">Getting Oxidation value</output>
+				<!-- <h4>Status <output id="oxidation_rate_status1">Getting Oxidation Status</output></h4> -->
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-3">
+		<div class="well" style="border-radius: 15px;">
+			<h3><span class="fa fa-user"></span> Respiration</h3>
+			<br>
+			<div style="display: flex;justify-content: space-between;">
+				<output id="respiration_rate_value1"style="font-size: 20px;font-weight: bold;color: black;">Getting Respiration value</output>
+				<!-- <h4>Status <output id="respiration_rate_status1">Getting Respiration Status</output></h4> -->
+			</div>
+		</div>
+	</div>
+
+	</div>
+	</div>
+
+	<div class="col-sm-3" style="margin-top: 40px;">
+		<div class="well" style="border-radius: 15px;">
+			<h4 style="text-align:center">HEART RATE GRAPHICAL VIEW</h4>
+			<div class="chart-container">
+				<div class="videoWrapper">
+					<canvas id="mycanvas"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-3" style="margin-top: 40px;">
+		<div class="well" style="border-radius: 15px;">
+			<h4 style="text-align:center">TEMPERATURE GRAPHICAL VIEW</h4>
+			<div class="chart-container">
+				<div class="videoWrapper">
+					<canvas id="mycanvas2"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-3" style="margin-top: 40px;">
+		<div class="well" style="border-radius: 15px;">
+			<h4 style="text-align:center">OXIDATION GRAPHICAL VIEW</h4>
+			<div class="chart-container">
+				<div class="videoWrapper">
+					<canvas id="mycanvas3"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-3" style="margin-top: 40px;">
+		<div class="well" style="border-radius: 15px;">
+			<h4 style="text-align:center">RESPIRATION GRAPHICAL VIEW</h4>
+			<div class="chart-container">
+				<div class="videoWrapper">
+					<canvas id="mycanvas4"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	</div>
+
+</body>
+<script>
+	$(document).ready(function () {
+		getheart_rate_value1();
+		gettemperature_rate_value1();
+		getoxidation_rate_value1();
+		getrespiration_rate_value1();
+		getGraph();
+		getGraph2();
+		getGraph3();
+		getGraph4();
+	});
+
+	setInterval(function () {
+		getheart_rate_value1();
+		gettemperature_rate_value1();
+		getoxidation_rate_value1();
+		getrespiration_rate_value1();
+		getGraph();
+		getGraph2();
+		getGraph3();
+		getGraph4();
+	}, 3000);
+
+	function getheart_rate_value1() {
+		$.ajax({
+			url: '/heart_rate6',
+			type: "get",
+			dataType: "json",
+			success: function (data, textStatus, jqXHR) {
+
+				console.log (data)
+				heart_rate_value1 = data[0].value
+				heart_rate_status1 = data[0].level 
+				$("#heart_rate_value1").val(heart_rate_value1);
+				$("#heart_rate_status1").val(heart_rate_status1);
+			}
+		});
+	}
+
+
+
+	function gettemperature_rate_value1() {
+		$.ajax({
+			url: '/temperature_rate_value6',
+			type: "get",
+			dataType: "json",
+			success: function (data, textStatus, jqXHR) {
+				temperature_rate_value1 = data[0].value
+				temperature_rate_status1 = data[0].level 
+				$("#temperature_rate_value1").val(temperature_rate_value1);
+				$("#temperature_rate_status1").val(temperature_rate_status1);
+			}
+		});
+	}
+
+
+	function getoxidation_rate_value1() {
+		$.ajax({
+			url: '/oxidation_rate_value6',
+			type: "get",
+			dataType: "json",
+			success: function (data, textStatus, jqXHR) {
+				oxidation_rate_value1 = data[0].value
+				oxidation_rate_status1 = data[0].level 
+				$("#oxidation_rate_value1").val(oxidation_rate_value1);
+				$("#oxidation_rate_status1").val(oxidation_rate_status1);
+			}
+		});
+	}
+
+
+
+
+	function getrespiration_rate_value1() {
+		$.ajax({
+			url: '/respiration_rate_value6',
+			type: "get",
+			dataType: "json",
+			success: function (data, textStatus, jqXHR) {
+				respiration_rate_value1 = data[0].value
+				respiration_rate_status1 = data[0].level 
+				$("#respiration_rate_value1").val(respiration_rate_status1);
+				$("#respiration_rate_status1").val(respiration_rate_status1);
+			}
+		});
+	}
+
+
+
+
+
+
+
+	function getGraph() {
+		var LineGraph;
+		$.ajax({
+			url: "/heartrategraph6",
+			type: "GET",
+			success: function (data) {
+				// console.log(data);
+				var Time = [];
+				var day_wise_usage = [];
+
+				for (var i in data) {
+					Time.push(data[i].dt);
+					day_wise_usage.push(data[i].Heart_Rate);
+				}
+				var chartdata = {
+					labels: Time,
+					datasets: [
+						{
+							label: "Day Wise Data",
+							fill: false,
+							pointRadius: 1,
+							borderWidth: 2.5,
+							backgroundColor: "rgba(19, 27, 251, 0.97)",
+							borderColor: "rgba(19, 27, 251, 1)",
+							pointHoverBackgroundColor: "rgba(19, 27, 251, 1)",
+							pointHoverBorderColor: "rgba(19, 27, 251,1)",
+							data: day_wise_usage,
+							steppedLine: true
+						}]
+				};
+
+				var ctx = $("#mycanvas");
+				if (LineGraph) LineGraph.destroy();
+				LineGraph = new Chart(ctx, {
+					type: 'line',
+					data: chartdata,
+
+					options: {
+
+						scales: {
+							xAxes: [{
+								type: 'time',
+								ticks:                   //for x label not overlap
+								{
+									//autoSkip: true,
+									//display: true,
+									//autoSkipPadding: 15,
+									//fontColor: "#0000",
+									//fontSize: 14,
+									minRotation: 30,
+									maxRotation: 0
+								},
+								time: {
+									tooltipFormat: 'll h:mm:ss a',
+									displayFormats: {
+
+										'second': ' HH:mm',
+										'minute': ' HH:mm',
+										'hour': ' HH:mm',
+										'day': ' HH:mm',
+										'week': ' HH:mm',
+										'month': ' HH:mm',
+										'quarter': ' HH:mm',
+										'year': ' HH:mm'
+									}
+								},
+								stepSize: 5
+							}],
+						},
+						animation: false,
+
+					}
+				});
+			}
+		});
+	}
+
+	function getGraph2() {
+		var LineGraph;
+		$.ajax({
+			url: "/temperaturegraph6",
+			type: "GET",
+			success: function (data) {
+				// console.log(data);
+				var Time = [];
+				var day_wise_usage = [];
+
+				for (var i in data) {
+					Time.push(data[i].dt);
+					day_wise_usage.push(data[i].temperature);
+				}
+				var chartdata = {
+					labels: Time,
+					datasets: [
+						{
+							label: "Day Wise Data",
+							fill: false,
+							pointRadius: 1,
+							borderWidth: 2.5,
+							backgroundColor: "rgba(19, 27, 251, 0.97)",
+							borderColor: "rgba(19, 27, 251, 1)",
+							pointHoverBackgroundColor: "rgba(19, 27, 251, 1)",
+							pointHoverBorderColor: "rgba(19, 27, 251,1)",
+							data: day_wise_usage,
+							steppedLine: true
+						}]
+				};
+
+				var ctx = $("#mycanvas2");
+				if (LineGraph) LineGraph.destroy();
+				LineGraph = new Chart(ctx, {
+					type: 'line',
+					data: chartdata,
+
+					options: {
+
+						scales: {
+							xAxes: [{
+								type: 'time',
+								ticks:                   //for x label not overlap
+								{
+									//autoSkip: true,
+									//display: true,
+									//autoSkipPadding: 15,
+									//fontColor: "#0000",
+									//fontSize: 14,
+									minRotation: 30,
+									maxRotation: 0
+								},
+								time: {
+									tooltipFormat: 'll h:mm:ss a',
+									displayFormats: {
+										'millisecond': ' HH:mm',
+										'second': ' HH:mm',
+										'minute': ' HH:mm',
+										'hour': ' HH:mm',
+										'day': ' HH:mm',
+										'week': ' HH:mm',
+										'month': ' HH:mm',
+										'quarter': ' HH:mm',
+										'year': ' HH:mm'
+									}
+								},
+								stepSize: 10
+							}],
+						},
+						animation: false,
+
+					}
+				});
+			}
+		});
+	}
+
+	function getGraph3() {
+		var LineGraph;
+		$.ajax({
+			url: "/oxidationgraph6",
+			type: "GET",
+			success: function (data) {
+				// console.log(data);
+				var Time = [];
+				var day_wise_usage = [];
+
+				for (var i in data) {
+					Time.push(data[i].dt);
+					day_wise_usage.push(data[i].oxidation);
+				}
+				var chartdata = {
+					labels: Time,
+					datasets: [
+						{
+							label: "Day Wise Data",
+							fill: false,
+							pointRadius: 1,
+							borderWidth: 2.5,
+							backgroundColor: "rgba(19, 27, 251, 0.97)",
+							borderColor: "rgba(19, 27, 251, 1)",
+							pointHoverBackgroundColor: "rgba(19, 27, 251, 1)",
+							pointHoverBorderColor: "rgba(19, 27, 251,1)",
+							data: day_wise_usage,
+							steppedLine: true
+						}]
+				};
+
+				var ctx = $("#mycanvas3");
+				if (LineGraph) LineGraph.destroy();
+				LineGraph = new Chart(ctx, {
+					type: 'line',
+					data: chartdata,
+
+					options: {
+
+						scales: {
+							xAxes: [{
+								type: 'time',
+								ticks:                   //for x label not overlap
+								{
+									//autoSkip: true,
+									//display: true,
+									//autoSkipPadding: 15,
+									//fontColor: "#0000",
+									//fontSize: 14,
+									minRotation: 30,
+									maxRotation: 0
+								},
+								time: {
+									tooltipFormat: 'll h:mm:ss a',
+									displayFormats: {
+										'millisecond': ' HH:mm',
+										'second': ' HH:mm',
+										'minute': ' HH:mm',
+										'hour': ' HH:mm',
+										'day': ' HH:mm',
+										'week': ' HH:mm',
+										'month': ' HH:mm',
+										'quarter': ' HH:mm',
+										'year': ' HH:mm'
+									}
+								},
+								stepSize: 10
+							}],
+						},
+						animation: false,
+
+					}
+				});
+			}
+		});
+	}
+
+
+	function getGraph4() {
+		var LineGraph;
+		$.ajax({
+			url: "/respirationgraph6",
+			type: "GET",
+			success: function (data) {
+				// console.log(data);
+				var Time = [];
+				var day_wise_usage = [];
+
+				for (var i in data) {
+					Time.push(data[i].dt);
+					day_wise_usage.push(data[i].respiration);
+				}
+				var chartdata = {
+					labels: Time,
+					datasets: [
+						{
+							label: "Day Wise Data",
+							fill: false,
+							pointRadius: 1,
+							borderWidth: 2.5,
+							backgroundColor: "rgba(19, 27, 251, 0.97)",
+							borderColor: "rgba(19, 27, 251, 1)",
+							pointHoverBackgroundColor: "rgba(19, 27, 251, 1)",
+							pointHoverBorderColor: "rgba(19, 27, 251,1)",
+							data: day_wise_usage,
+							steppedLine: true
+						}]
+				};
+
+				var ctx = $("#mycanvas4");
+				if (LineGraph) LineGraph.destroy();
+				LineGraph = new Chart(ctx, {
+					type: 'line',
+					data: chartdata,
+					options: {
+						scales: {
+							xAxes: [{
+								type: 'time',
+								ticks:                   //for x label not overlap
+								{
+									//autoSkip: true,
+									//display: true,
+									//autoSkipPadding: 15,
+									//fontColor: "#0000",
+									//fontSize: 14,
+									minRotation: 30,
+									maxRotation: 0
+								},
+								time: {
+									tooltipFormat: 'll h:mm:ss a',
+									displayFormats: {
+										'millisecond': ' HH:mm',
+										'second': ' HH:mm',
+										'minute': ' HH:mm',
+										'hour': ' HH:mm',
+										'day': ' HH:mm',
+										'week': ' HH:mm',
+										'month': ' HH:mm',
+										'quarter': ' HH:mm',
+										'year': ' HH:mm'
+									}
+								},
+								stepSize: 10
+							}],
+						},
+						animation: false,
+					}
+				});
+			}
+		});
+	}
+
+
+
+
+</script>
+
+
+</html>

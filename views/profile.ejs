@@ -1,0 +1,245 @@
+<!-- views/profile.ejs -->
+
+<!doctype html>
+<html>
+
+<head>
+	<title>Health Information</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/momentjs/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+	<!-- <style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style> -->
+</head>
+
+<body style=" background-image: linear-gradient(to right, #09203f   , #537895);
+;
+">
+	<div style="display: flex; justify-content: space-between;margin-top: 20px;">
+		<h3 style="color: white; margin-left: 20px ; font-size: 45px;"> Welcome <%= user.username %> !!</h3>
+		<a style="margin-right: 20px;margin-top: 15px;color: #d12a31;background-color: white; padding: 5px; border-radius: 10px; width: 80px;text-align: center;height: 30px;font-size: 17px;"
+			href="/logout">Logout</a>
+	</div>
+	<div class=" row" style="margin-top: 100px;">
+	</div>
+	</div>
+	<a href="/Patient1">
+
+
+		<div class="col-sm-4">
+			<div class="well" id="patient1" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center; color: white;"><span class="fa fa-user"></span> Patient 1</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	<a href="/Patient2">
+		<div class="col-sm-4">
+			<div class="well" id="patient2" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center;color: white;"><span class="fa fa-user"></span> Patient 2</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	<a href="/Patient3">
+		<div class="col-sm-4">
+			<div class="well" id="patient3" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center;color: white;"><span class="fa fa-user"></span> Patient 3</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	<a href="/Patient4">
+		<div class="col-sm-4">
+			<div class="well" id="patient4" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center;color: white;"><span class="fa fa-user"></span> Patient 4</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	<a href="/Patient5">
+		<div class="col-sm-4">
+			<div class="well" id="patient5" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center;color: white;"><span class="fa fa-user"></span> Patient 5</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	<a href="/Patient6">
+		<div class="col-sm-4">
+			<div class="well" id="patient6" style="border-radius: 15px;">
+				<br>
+				<h3 style="text-align: center;color: white;"><span class="fa fa-user"></span> Patient 6</h3>
+				<br>
+			</div>
+		</div>
+	</a>
+	</div>
+	</div>
+	</div>
+
+
+	<script>
+		$(document).ready(function () {
+			getpatient_Health_Status1();
+			getpatient_Health_Status2();
+			getpatient_Health_Status3();
+			getpatient_Health_Status4();
+			getpatient_Health_Status5();
+			getpatient_Health_Status6();
+
+
+
+		});
+
+		setInterval(function () {
+			getpatient_Health_Status1();
+			getpatient_Health_Status2();
+			getpatient_Health_Status3();
+			getpatient_Health_Status4();
+			getpatient_Health_Status5();
+			getpatient_Health_Status6();
+
+		}, 3000);
+
+
+		function getpatient_Health_Status1() {
+			$.ajax({
+				url: '/patient_Health_Status1',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+
+					heart_rate_value1 = data[0].level
+
+					
+					if (heart_rate_value1 == "Normal") {
+						$("#patient1").css("background-color", "#57a331");
+						$("#patient1").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient1").css("background-color", "#d12a31");
+						$("#patient1").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+		function getpatient_Health_Status2() {
+			$.ajax({
+				url: '/patient_Health_Status2',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+					heart_rate_value1 = data[0].level
+
+					if (heart_rate_value1 == "Normal") {
+						$("#patient2").css("background-color", "#57a331");
+						$("#patient2").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient2").css("background-color", "#d12a31");
+						$("#patient2").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+		function getpatient_Health_Status3() {
+			$.ajax({
+				url: '/patient_Health_Status3',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+					heart_rate_value1 = data[0].level
+
+					if (heart_rate_value1 == "Normal") {
+						$("#patient3").css("background-color", "#57a331");
+						$("#patient3").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient3").css("background-color", "#d12a31");
+						$("#patient3").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+		function getpatient_Health_Status4() {
+			$.ajax({
+				url: '/patient_Health_Status4',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+					heart_rate_value1 = data[0].level
+
+					if (heart_rate_value1 == "Normal") {
+						$("#patient4").css("background-color", "#57a331");
+						$("#patient4").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient4").css("background-color", "#d12a31");
+						$("#patient4").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+		function getpatient_Health_Status5() {
+			$.ajax({
+				url: '/patient_Health_Status5',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+					heart_rate_value1 = data[0].level
+
+					if (heart_rate_value1 == "Normal") {
+						$("#patient5").css("background-color", "#57a331");
+						$("#patient5").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient5").css("background-color", "#d12a31");
+						$("#patient5").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+		function getpatient_Health_Status6() {
+			$.ajax({
+				url: '/patient_Health_Status6',
+				type: "get",
+				dataType: "json",
+				success: function (data, textStatus, jqXHR) {
+					heart_rate_value1 = data[0].level
+
+					if (heart_rate_value1 == "Normal") {
+						$("#patient6").css("background-color", "#57a331");
+						$("#patient6").css("border-color", "#57a331");					}
+
+					else {
+						$("#patient6").css("background-color", "#d12a31");
+						$("#patient6").css("border-color", "#d12a31");
+					}
+				}
+			});
+		}
+
+
+
+
+	</script>
+
+
+</body>
+
+</html>	
